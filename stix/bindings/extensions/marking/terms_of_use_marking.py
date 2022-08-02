@@ -46,38 +46,37 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TermsOfUseMarkingStructureType, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)
 
         self.Terms_Of_Use = Terms_Of_Use
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if TermsOfUseMarkingStructureType.subclass:
-            return TermsOfUseMarkingStructureType.subclass(*args_, **kwargs_)
+            return TermsOfUseMarkingStructureType.subclass(*self, **kwargs_)
         else:
-            return TermsOfUseMarkingStructureType(*args_, **kwargs_)
+            return TermsOfUseMarkingStructureType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Terms_Of_Use(self): return self.Terms_Of_Use
     def set_Terms_Of_Use(self, Terms_Of_Use): self.Terms_Of_Use = Terms_Of_Use
     def hasContent_(self):
-        if (
-            self.Terms_Of_Use is not None or
-            super(TermsOfUseMarkingStructureType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Terms_Of_Use is not None
+                or super(TermsOfUseMarkingStructureType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TermsOfUseMarkingStructureType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='TermsOfUseMarkingStructureType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='TOUMarking:', name_='TermsOfUseMarkingStructureType'):
         super(TermsOfUseMarkingStructureType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='TermsOfUseMarkingStructureType')
         if 'xsi:type' not in already_processed:
@@ -86,13 +85,12 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TermsOfUseMarkingStructureType', fromsubclass_=False, pretty_print=True):
         super(TermsOfUseMarkingStructureType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
         if self.Terms_Of_Use is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Terms_Of_Use>%s</%s:Terms_Of_Use>%s' % (nsmap[namespace_], quote_xml(self.Terms_Of_Use), nsmap[namespace_], eol_))
+            eol_ = '\n' if pretty_print else ''
+            lwrite(
+                f'<{nsmap[namespace_]}:Terms_Of_Use>{quote_xml(self.Terms_Of_Use)}</{nsmap[namespace_]}:Terms_Of_Use>{eol_}'
+            )
     def build(self, node):
         self.__sourcenode__ = node
         already_processed = set()

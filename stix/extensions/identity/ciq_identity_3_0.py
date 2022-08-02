@@ -34,7 +34,7 @@ class CIQIdentity3_0Instance(common.Identity):
     def __init__(self, roles=None, specification=None):
         super(CIQIdentity3_0Instance, self).__init__()
         self.roles = roles
-        self.specification = specification if specification else STIXCIQIdentity3_0()
+        self.specification = specification or STIXCIQIdentity3_0()
 
     @property
     def roles(self):
@@ -84,10 +84,9 @@ class CIQIdentity3_0Instance(common.Identity):
     def from_obj(cls, cls_obj):
         obj = super(CIQIdentity3_0Instance, cls).from_obj(cls_obj)
 
-        roles = cls_obj.Role
         specification = cls_obj.Specification
 
-        if roles:
+        if roles := cls_obj.Role:
             for role in roles:
                 obj.add_role(role)
 
@@ -577,8 +576,7 @@ class AdministrativeArea(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        name_elements = obj.findall(NameElement.XML_TAG)
-        if name_elements:
+        if name_elements := obj.findall(NameElement.XML_TAG):
             for name_element in name_elements:
                 return_obj.name_elements.append(NameElement.from_obj(name_element))
 
@@ -649,8 +647,7 @@ class Country(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        name_elements = obj.findall("{%s}NameElement" % XML_NS_XAL)
-        if name_elements:
+        if name_elements := obj.findall("{%s}NameElement" % XML_NS_XAL):
             for name_element in name_elements:
                 return_obj.name_elements.append(NameElement.from_obj(name_element))
 
@@ -782,8 +779,7 @@ class FreeTextAddress(stix.Entity):
             return_obj = cls()
 
         address_line_tag = "{%s}AddressLine" % XML_NS_XAL
-        address_lines = obj.findall(address_line_tag)
-        if address_lines:
+        if address_lines := obj.findall(address_line_tag):
             for address_line in address_lines:
                 return_obj.address_lines.append(address_line.text)
 
@@ -891,20 +887,17 @@ class PartyName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        name_lines = obj.findall(NameLine.XML_TAG)
-        if name_lines:
+        if name_lines := obj.findall(NameLine.XML_TAG):
             for name_line_obj in name_lines:
                 name_line = NameLine.from_obj(name_line_obj)
                 return_obj.add_name_line(name_line)
 
-        person_names = obj.findall(PersonName.XML_TAG)
-        if person_names:
+        if person_names := obj.findall(PersonName.XML_TAG):
             for person_name_obj in person_names:
                 person_name = PersonName.from_obj(person_name_obj)
                 return_obj.add_person_name(person_name)
 
-        org_names = obj.findall(OrganisationName.XML_TAG)
-        if org_names:
+        if org_names := obj.findall(OrganisationName.XML_TAG):
             for organisation_name_obj in org_names:
                 org_name = OrganisationName.from_obj(organisation_name_obj)
                 return_obj.add_organisation_name(org_name)
@@ -1071,7 +1064,7 @@ class PersonName(stix.Entity):
     @type_.setter
     def type_(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of %s: ' % (self.TYPES,))
+            raise ValueError(f'value must be one of {self.TYPES}: ')
 
         self._type = value
 
@@ -1108,8 +1101,7 @@ class PersonName(stix.Entity):
 
         return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XNL)
 
-        name_elements = obj.findall(PersonNameElement.XML_TAG)
-        if name_elements:
+        if name_elements := obj.findall(PersonNameElement.XML_TAG):
             for name_element_obj in name_elements:
                 person_name_element = PersonNameElement.from_obj(name_element_obj)
                 return_obj.add_name_element(person_name_element)
@@ -1180,7 +1172,7 @@ class OrganisationName(stix.Entity):
     @type_.setter
     def type_(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of %s: ' % (self.TYPES,))
+            raise ValueError(f'value must be one of {self.TYPES}: ')
 
         self._type = value
 
@@ -1253,14 +1245,12 @@ class OrganisationName(stix.Entity):
 
         return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XNL)
 
-        name_elements = obj.findall(OrganisationNameElement.XML_TAG)
-        if name_elements:
+        if name_elements := obj.findall(OrganisationNameElement.XML_TAG):
             for name_element_obj in name_elements:
                 name_element = OrganisationNameElement.from_obj(name_element_obj)
                 return_obj.add_organisation_name_element(name_element)
 
-        sub_division_names = obj.findall(SubDivisionName.XML_TAG)
-        if sub_division_names:
+        if sub_division_names := obj.findall(SubDivisionName.XML_TAG):
             for sub_division_name_obj in sub_division_names:
                 sub_division_name = SubDivisionName.from_obj(sub_division_name_obj)
                 return_obj.add_subdivision_name(sub_division_name)
@@ -1373,7 +1363,7 @@ class PersonNameElement(_BaseNameElement):
     @element_type.setter
     def element_type(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of %s: ' % (self.TYPES,))
+            raise ValueError(f'value must be one of {self.TYPES}: ')
 
         self._element_type = value
 
@@ -1446,7 +1436,7 @@ class OrganisationNameElement(_BaseNameElement):
     @element_type.setter
     def element_type(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of: %s ' % (self.TYPES,))
+            raise ValueError(f'value must be one of: {self.TYPES} ')
 
         self._element_type = value
 
@@ -1525,7 +1515,7 @@ class SubDivisionName(stix.Entity):
     @type.setter
     def type(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of: %s' % (self.TYPES,))
+            raise ValueError(f'value must be one of: {self.TYPES}')
 
         self._type = value
 
@@ -1815,7 +1805,7 @@ class ContactNumber(stix.Entity):
         if not value:
             self._communication_media_type = None
         elif value not in self.ALLOWED_COM_MEDIA_TYPES:
-            raise ValueError('value must be one of %s' % (self.ALLOWED_COM_MEDIA_TYPES,))
+            raise ValueError(f'value must be one of {self.ALLOWED_COM_MEDIA_TYPES}')
         else:
             self._communication_media_type = value
 
@@ -1901,7 +1891,7 @@ class ContactNumberElement(stix.Entity):
         if not value:
             self._type = None
         elif value not in self.ALLOWED_TYPES:
-            raise ValueError('value must be one of %s' % (self.ALLOWED_TYPES,))
+            raise ValueError(f'value must be one of {self.ALLOWED_TYPES}')
         else:
             self._type = value
 

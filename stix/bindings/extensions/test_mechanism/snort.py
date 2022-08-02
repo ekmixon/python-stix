@@ -39,27 +39,15 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
         super(SnortTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.Product_Name = Product_Name
         self.Version = Version
-        if Rule is None:
-            self.Rule = []
-        else:
-            self.Rule = Rule
-        if Event_Filter is None:
-            self.Event_Filter = []
-        else:
-            self.Event_Filter = Event_Filter
-        if Rate_Filter is None:
-            self.Rate_Filter = []
-        else:
-            self.Rate_Filter = Rate_Filter
-        if Event_Suppression is None:
-            self.Event_Suppression = []
-        else:
-            self.Event_Suppression = Event_Suppression
-    def factory(*args_, **kwargs_):
+        self.Rule = [] if Rule is None else Rule
+        self.Event_Filter = [] if Event_Filter is None else Event_Filter
+        self.Rate_Filter = [] if Rate_Filter is None else Rate_Filter
+        self.Event_Suppression = [] if Event_Suppression is None else Event_Suppression
+    def factory(self, **kwargs_):
         if SnortTestMechanismType.subclass:
-            return SnortTestMechanismType.subclass(*args_, **kwargs_)
+            return SnortTestMechanismType.subclass(*self, **kwargs_)
         else:
-            return SnortTestMechanismType(*args_, **kwargs_)
+            return SnortTestMechanismType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Product_Name(self): return self.Product_Name
     def set_Product_Name(self, Product_Name): self.Product_Name = Product_Name
@@ -82,34 +70,33 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
     def add_Event_Suppression(self, value): self.Event_Suppression.append(value)
     def insert_Event_Suppression(self, index, value): self.Event_Suppression[index] = value
     def hasContent_(self):
-        if (
-            self.Product_Name is not None or
-            self.Version is not None or
-            self.Rule or
-            self.Event_Filter or
-            self.Rate_Filter or
-            self.Event_Suppression or
-            super(SnortTestMechanismType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Product_Name is not None
+                or self.Version is not None
+                or self.Rule
+                or self.Event_Filter
+                or self.Rate_Filter
+                or self.Event_Suppression
+                or super(SnortTestMechanismType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SnortTestMechanismType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='SnortTestMechanismType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='snortTM:', name_='SnortTestMechanismType'):
         super(SnortTestMechanismType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='SnortTestMechanismType')
         # if 'xmlns' not in already_processed:
@@ -122,16 +109,19 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SnortTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(SnortTestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Product_Name is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Product_Name>%s</%s:Product_Name>%s' % (nsmap[namespace_], quote_xml(self.Product_Name), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Product_Name>{quote_xml(self.Product_Name)}</{nsmap[namespace_]}:Product_Name>{eol_}'
+            )
+
         if self.Version is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], quote_xml(self.Version), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Version>{quote_xml(self.Version)}</{nsmap[namespace_]}:Version>{eol_}'
+            )
+
         for Rule_ in self.Rule:
             Rule_.export(lwrite, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
         for Event_Filter_ in self.Event_Filter:

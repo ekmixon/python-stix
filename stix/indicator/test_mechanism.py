@@ -44,7 +44,7 @@ class _BaseTestMechanism(stix.Entity):
 
 class TestMechanismFactory(entities.EntityFactory):
     @classmethod
-    def entity_class(self, key):
+    def entity_class(cls, key):
         import stix.extensions.test_mechanism.snort_test_mechanism  # noqa
         import stix.extensions.test_mechanism.open_ioc_2010_test_mechanism  # noqa
         import stix.extensions.test_mechanism.yara_test_mechanism  # noqa

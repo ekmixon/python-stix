@@ -28,16 +28,11 @@ from stix.data_marking import MarkingStructure
 
 def validate_value(instance, value):
     allowed = instance._ALLOWED_VALUES
-    if not value:
+    if not value or not allowed or value in allowed:
         return
-    elif not allowed:
-        return
-    elif value in allowed:
-        return
-    else:
-        error = "Value must be one of {allowed}. Received '{value}'"
-        error = error.format(**locals())
-        raise ValueError(error)
+    error = "Value must be one of {allowed}. Received '{value}'"
+    error = error.format(**locals())
+    raise ValueError(error)
 
 
 class AISConsentType(stix.Entity):
@@ -205,10 +200,12 @@ def _validate_and_create_industry_type(industry_type):
     for item in val:
         for idx, sector in enumerate(lower_case_sectors):
             if item == sector:
-                if not result:
-                    result = INDUSTRY_SECTORS[idx]
-                else:
-                    result = "{0}|{1}".format(result, INDUSTRY_SECTORS[idx])
+                result = (
+                    "{0}|{1}".format(result, INDUSTRY_SECTORS[idx])
+                    if result
+                    else INDUSTRY_SECTORS[idx]
+                )
+
                 break
         else:
             # The sectors collection was exhausted. No match found.
@@ -271,9 +268,7 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
             'admin_area_name_code', 'admin_area_name_code_type',
             'organisation_name')
 
-    diff = set(args) - set(kwargs.keys())
-
-    if diff:
+    if diff := set(args) - set(kwargs.keys()):
         msg = 'All keyword arguments must be provided. Missing: {0}'
         raise ValueError(msg.format(tuple(diff)))
 

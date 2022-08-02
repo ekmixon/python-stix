@@ -48,39 +48,33 @@ class StructuredCOAType(GeneratedsSuper):
     def __init__(self, idref=None, id=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
-        pass
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if StructuredCOAType.subclass:
-            return StructuredCOAType.subclass(*args_, **kwargs_)
+            return StructuredCOAType.subclass(*self, **kwargs_)
         else:
-            return StructuredCOAType(*args_, **kwargs_)
+            return StructuredCOAType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_idref(self): return self.idref
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
     def hasContent_(self):
-        if (
-
-            ):
-            return True
-        else:
-            return False
+        return False
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredCOAType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='StructuredCOAType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='coa:', name_='StructuredCOAType'):
         # if 'xmlns' not in already_processed:
         #     already_processed.add('xmlns')
@@ -92,10 +86,10 @@ class StructuredCOAType(GeneratedsSuper):
             lwrite(xsi_type)
         if self.idref is not None and 'idref' not in already_processed:
             already_processed.add('idref')
-            lwrite(' idref=%s' % (quote_attrib(self.idref), ))
+            lwrite(f' idref={quote_attrib(self.idref)}')
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
-            lwrite(' id=%s' % (quote_attrib(self.id), ))
+            lwrite(f' id={quote_attrib(self.id)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredCOAType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -124,22 +118,14 @@ class ObjectiveType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Description=None, Short_Description=None, Applicability_Confidence=None):
-        if Description is None:
-            self.Description = []
-        else:
-            self.Description = Description
-
-        if Short_Description is None:
-            self.Short_Description = []
-        else:
-            self.Short_Description = Short_Description
-
+        self.Description = [] if Description is None else Description
+        self.Short_Description = [] if Short_Description is None else Short_Description
         self.Applicability_Confidence = Applicability_Confidence
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if ObjectiveType.subclass:
-            return ObjectiveType.subclass(*args_, **kwargs_)
+            return ObjectiveType.subclass(*self, **kwargs_)
         else:
-            return ObjectiveType(*args_, **kwargs_)
+            return ObjectiveType(*self, **kwargs_)
     factory = staticmethod(factory)
     def insert_Description(self, index, value): self.Description[index] = value
     def add_Description(self, Description): self.Description.append(Description)
@@ -152,37 +138,33 @@ class ObjectiveType(GeneratedsSuper):
     def get_Applicability_Confidence(self): return self.Applicability_Confidence
     def set_Applicability_Confidence(self, Applicability_Confidence): self.Applicability_Confidence = Applicability_Confidence
     def hasContent_(self):
-        if (
-            self.Description or
-            self.Short_Description or
-            self.Applicability_Confidence is not None
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Description
+                or self.Short_Description
+                or self.Applicability_Confidence is not None
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ObjectiveType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ObjectiveType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='coa:', name_='ObjectiveType'):
         pass
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ObjectiveType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Description in self.Description:
             Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         for Short_Description in self.Short_Description:
@@ -236,14 +218,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         self.Title = Title
         self.Stage = Stage
         self.Type = Type
-        if Description is None:
-            self.Description = []
-        else:
-            self.Description = Description
-        if Short_Description is None:
-            self.Short_Description = []
-        else:
-            self.Short_Description = Short_Description
+        self.Description = [] if Description is None else Description
+        self.Short_Description = [] if Short_Description is None else Short_Description
         self.Objective = Objective
         self.Parameter_Observables = Parameter_Observables
         self.Structured_COA = Structured_COA
@@ -254,11 +230,11 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         self.Handling = Handling
         self.Related_COAs = Related_COAs
         self.Related_Packages = Related_Packages
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if CourseOfActionType.subclass:
-            return CourseOfActionType.subclass(*args_, **kwargs_)
+            return CourseOfActionType.subclass(*self, **kwargs_)
         else:
-            return CourseOfActionType(*args_, **kwargs_)
+            return CourseOfActionType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
@@ -297,43 +273,42 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
-        if (
-            self.Title is not None or
-            self.Stage is not None or
-            self.Type is not None or
-            self.Description or
-            self.Short_Description or
-            self.Objective is not None or
-            self.Parameter_Observables is not None or
-            self.Structured_COA is not None or
-            self.Impact is not None or
-            self.Cost is not None or
-            self.Efficacy is not None or
-            self.Information_Source is not None or
-            self.Handling is not None or
-            self.Related_COAs is not None or
-            self.Related_Packages is not None or
-            super(CourseOfActionType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Title is not None
+                or self.Stage is not None
+                or self.Type is not None
+                or self.Description
+                or self.Short_Description
+                or self.Objective is not None
+                or self.Parameter_Observables is not None
+                or self.Structured_COA is not None
+                or self.Impact is not None
+                or self.Cost is not None
+                or self.Efficacy is not None
+                or self.Information_Source is not None
+                or self.Handling is not None
+                or self.Related_COAs is not None
+                or self.Related_Packages is not None
+                or super(CourseOfActionType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='Course_Of_Action', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='Course_Of_Action')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='coa:', name_='Course_Of_Action'):
         super(CourseOfActionType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='Course_Of_Action')
         #if 'xmlns' not in already_processed:
@@ -346,16 +321,16 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             lwrite(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
-            lwrite(' version=%s' % (quote_attrib(self.version), ))
+            lwrite(f' version={quote_attrib(self.version)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CourseOfActionType', fromsubclass_=False, pretty_print=True):
         super(CourseOfActionType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Title>{quote_xml(self.Title)}</{nsmap[namespace_]}:Title>{eol_}'
+            )
+
         if self.Stage is not None:
             self.Stage.export(lwrite, level, nsmap, namespace_, name_='Stage', pretty_print=pretty_print)
         if self.Type is not None:
@@ -367,7 +342,14 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         if self.Objective is not None:
             self.Objective.export(lwrite, level, nsmap, namespace_, name_='Objective', pretty_print=pretty_print)
         if self.Parameter_Observables is not None:
-            self.Parameter_Observables.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Parameter_Observables', pretty_print=pretty_print)
+            self.Parameter_Observables.export(
+                lwrite,
+                level,
+                f"{nsmap[namespace_]}:",
+                name_='Parameter_Observables',
+                pretty_print=pretty_print,
+            )
+
         if self.Structured_COA is not None:
             self.Structured_COA.export(lwrite, level, nsmap, namespace_, name_='Structured_COA', pretty_print=pretty_print)
         if self.Impact is not None:
@@ -468,52 +450,42 @@ class RelatedCOAsType(stix_common_binding.GenericRelationshipListType):
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_COA=None):
         super(RelatedCOAsType, self).__init__(scope=scope)
-        if Related_COA is None:
-            self.Related_COA = []
-        else:
-            self.Related_COA = Related_COA
-    def factory(*args_, **kwargs_):
+        self.Related_COA = [] if Related_COA is None else Related_COA
+    def factory(self, **kwargs_):
         if RelatedCOAsType.subclass:
-            return RelatedCOAsType.subclass(*args_, **kwargs_)
+            return RelatedCOAsType.subclass(*self, **kwargs_)
         else:
-            return RelatedCOAsType(*args_, **kwargs_)
+            return RelatedCOAsType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Related_COA(self): return self.Related_COA
     def set_Related_COA(self, Related_COA): self.Related_COA = Related_COA
     def add_Related_COA(self, value): self.Related_COA.append(value)
     def insert_Related_COA(self, index, value): self.Related_COA[index] = value
     def hasContent_(self):
-        if (
-            self.Related_COA or
-            super(RelatedCOAsType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (self.Related_COA or super(RelatedCOAsType, self).hasContent_())
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedCOAsType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedCOAsType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='coa:', name_='RelatedCOAsType'):
         super(RelatedCOAsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedCOAsType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedCOAsType', fromsubclass_=False, pretty_print=True):
         super(RelatedCOAsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Related_COA_ in self.Related_COA:
             Related_COA_.export(lwrite, level, nsmap, namespace_, name_='Related_COA', pretty_print=pretty_print)
     def build(self, node):

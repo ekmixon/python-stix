@@ -39,41 +39,40 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
         super(OVAL5_10TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.oval_definitions = oval_definitions
         self.oval_variables = oval_variables
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if OVAL5_10TestMechanismType.subclass:
-            return OVAL5_10TestMechanismType.subclass(*args_, **kwargs_)
+            return OVAL5_10TestMechanismType.subclass(*self, **kwargs_)
         else:
-            return OVAL5_10TestMechanismType(*args_, **kwargs_)
+            return OVAL5_10TestMechanismType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_oval_definitions(self): return self.oval_definitions
     def set_oval_definitions(self, oval_definitions): self.oval_definitions = oval_definitions
     def get_oval_variables(self): return self.oval_variables
     def set_oval_variables(self, oval_variables): self.oval_variables = oval_variables
     def hasContent_(self):
-        if (
-            self.oval_definitions is not None or
-            self.oval_variables is not None or
-            super(OVAL5_10TestMechanismType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.oval_definitions is not None
+                or self.oval_variables is not None
+                or super(OVAL5_10TestMechanismType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='OVAL5.10TestMechanismType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='OVAL5.10TestMechanismType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='', name_='OVAL5.10TestMechanismType'):
         super(OVAL5_10TestMechanismType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='OVAL5.10TestMechanismType')
         # if 'xmlns' not in already_processed:
@@ -86,10 +85,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='OVAL5.10TestMechanismType', fromsubclass_=False, pretty_print=True):
         super(OVAL5_10TestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.oval_definitions is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite(etree_.tostring(self.oval_definitions, pretty_print=pretty_print).decode())

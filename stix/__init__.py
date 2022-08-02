@@ -30,7 +30,7 @@ def _lookup_unprefixed(typename):
         if typename in xsi_type:
             return klass
 
-    error = "Unregistered extension type: %s" % typename
+    error = f"Unregistered extension type: {typename}"
     raise ValueError(error)
 
 
@@ -48,11 +48,11 @@ def _lookup_extension(xsi_type):
 
     """
     import stix.extensions.malware.maec_4_1_malware
-    
+
     if xsi_type in _EXTENSION_MAP:
         return _EXTENSION_MAP[xsi_type]
 
-    raise ValueError("Unregistered xsi:type %s" % xsi_type)
+    raise ValueError(f"Unregistered xsi:type {xsi_type}")
 
 
 def lookup_extension(typeinfo, default=None):
@@ -89,11 +89,11 @@ def lookup_extension(typeinfo, default=None):
 
         error = "Input %s is missing xml_type attribute. Cannot lookup class."
         raise ValueError(error % type(typeinfo))
-    
+
     # Extension binding classes usually (always?) have an `xmlns_prefix`
     # class attribute.
     if hasattr(typeinfo, 'xmlns_prefix'):
-        xsi_type = "%s:%s" % (typeinfo.xmlns_prefix, typeinfo.xml_type)
+        xsi_type = f"{typeinfo.xmlns_prefix}:{typeinfo.xml_type}"
         return _lookup_extension(xsi_type)
 
     # no xmlns_prefix found, try to resolve the class by just the `xml_type`

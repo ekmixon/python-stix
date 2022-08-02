@@ -40,38 +40,37 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     def __init__(self, marking_model_ref=None, marking_model_name=None, Statement=None):
         super(SimpleMarkingStructureType, self).__init__(marking_model_ref=marking_model_ref, marking_model_name=marking_model_name)
         self.Statement = Statement
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if SimpleMarkingStructureType.subclass:
-            return SimpleMarkingStructureType.subclass(*args_, **kwargs_)
+            return SimpleMarkingStructureType.subclass(*self, **kwargs_)
         else:
-            return SimpleMarkingStructureType(*args_, **kwargs_)
+            return SimpleMarkingStructureType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Statement(self): return self.Statement
     def set_Statement(self, Statement): self.Statement = Statement
     def hasContent_(self):
-        if (
-            self.Statement is not None or
-            super(SimpleMarkingStructureType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Statement is not None
+                or super(SimpleMarkingStructureType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SimpleMarkingStructureType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='SimpleMarkingStructureType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='simpleMarking:', name_='SimpleMarkingStructureType'):
         super(SimpleMarkingStructureType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='SimpleMarkingStructureType')
         # if 'xmlns' not in already_processed:
@@ -84,13 +83,12 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SimpleMarkingStructureType', fromsubclass_=False, pretty_print=True):
         super(SimpleMarkingStructureType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
         if self.Statement is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], quote_xml(self.Statement), nsmap[namespace_], eol_))
+            eol_ = '\n' if pretty_print else ''
+            lwrite(
+                f'<{nsmap[namespace_]}:Statement>{quote_xml(self.Statement)}</{nsmap[namespace_]}:Statement>{eol_}'
+            )
     def build(self, node):
         self.__sourcenode__ = node
         already_processed = set()

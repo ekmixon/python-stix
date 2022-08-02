@@ -41,14 +41,14 @@ class STIXHeaderTests(EntityTestCase, unittest.TestCase):
         h = core.STIXHeader()
         d = "description"
         h.description = d
-        self.assertEqual(str(h.description), d)
+        self.assertEqual(h.description, d)
 
     @assert_warnings
     def test_deprecated_short_description(self):
         h = core.STIXHeader()
         sd = "short_description"
         h.short_description = sd
-        self.assertEqual(str(h.short_description), sd)
+        self.assertEqual(h.short_description, sd)
 
     @assert_warnings
     def test_deprecated_package_intents(self):

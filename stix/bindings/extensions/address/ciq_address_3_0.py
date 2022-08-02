@@ -38,38 +38,37 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()
         self.Location = Location
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if CIQAddress3_0InstanceType.subclass:
-            return CIQAddress3_0InstanceType.subclass(*args_, **kwargs_)
+            return CIQAddress3_0InstanceType.subclass(*self, **kwargs_)
         else:
-            return CIQAddress3_0InstanceType(*args_, **kwargs_)
+            return CIQAddress3_0InstanceType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Location(self): return self.Location
     def set_Location(self, Location): self.Location = Location
     def hasContent_(self):
-        if (
-            self.Location is not None or
-            super(CIQAddress3_0InstanceType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Location is not None
+                or super(CIQAddress3_0InstanceType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CIQAddress3.0InstanceType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='CIQAddress3.0InstanceType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='', name_='CIQAddress3.0InstanceType'):
         super(CIQAddress3_0InstanceType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='CIQAddress3.0InstanceType')
         if 'xmlns' not in already_processed:
@@ -83,10 +82,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CIQAddress3.0InstanceType', fromsubclass_=False, pretty_print=True):
         super(CIQAddress3_0InstanceType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Location is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite(etree_.tostring(self.Location, pretty_print=pretty_print).decode())

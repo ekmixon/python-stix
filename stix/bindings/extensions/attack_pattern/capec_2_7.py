@@ -38,38 +38,37 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
         super(CAPEC2_7InstanceType, self).__init__(capec_id=capec_id, Description=Description)
         self.CAPEC = CAPEC
 
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if CAPEC2_7InstanceType.subclass:
-            return CAPEC2_7InstanceType.subclass(*args_, **kwargs_)
+            return CAPEC2_7InstanceType.subclass(*self, **kwargs_)
         else:
-            return CAPEC2_7InstanceType(*args_, **kwargs_)
+            return CAPEC2_7InstanceType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_CAPEC(self): return self.CAPEC
     def set_CAPEC(self, CAPEC): self.CAPEC = CAPEC
     def hasContent_(self):
-        if (
-            self.CAPEC is not None or
-            super(CAPEC2_7InstanceType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.CAPEC is not None
+                or super(CAPEC2_7InstanceType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CAPEC2.7InstanceType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='CAPEC2.7InstanceType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='', name_='CAPEC2.7InstanceType'):
         super(CAPEC2_7InstanceType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='CAPEC2.7InstanceType')
         if 'xmlns' not in already_processed:
@@ -82,10 +81,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CAPEC2.7InstanceType', fromsubclass_=False, pretty_print=True):
         super(CAPEC2_7InstanceType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.CAPEC is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite(etree_.tostring(self.CAPEC, pretty_print=pretty_print).decode())

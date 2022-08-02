@@ -90,11 +90,11 @@ class Report(stix.Entity):
         self.threat_actors = threat_actors
         self.ttps = ttps
         self.related_reports = related_reports
-        
+
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = utils.dates.now() if not idref else None
+            self.timestamp = None if idref else utils.dates.now()
 
     def add_indicator(self, indicator):
         """Adds an :class:`.Indicator` object to the :attr:`indicators`

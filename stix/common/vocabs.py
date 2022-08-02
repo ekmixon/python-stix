@@ -18,16 +18,11 @@ import stix.bindings.stix_common as stix_common_binding
 def validate_value(instance, value):
     allowed = instance._ALLOWED_VALUES
 
-    if not value:
+    if not value or not allowed or value in allowed:
         return
-    elif not allowed:
-        return
-    elif value in allowed:
-        return
-    else:
-        error = "Value for vocab {instance.__class__} must be one of {allowed}. Received '{value}'"
-        error = error.format(**locals())
-        raise ValueError(error)
+    error = "Value for vocab {instance.__class__} must be one of {allowed}. Received '{value}'"
+    error = error.format(**locals())
+    raise ValueError(error)
 
 
 class VocabList(typedlist.TypedList):
@@ -121,9 +116,7 @@ class VocabString(stix.Entity):
         )
 
     def to_dict(self):
-        if self.is_plain():
-            return self.value
-        return super(VocabString, self).to_dict()
+        return self.value if self.is_plain() else super(VocabString, self).to_dict()
 
     @classmethod
     def from_dict(cls, cls_dict):

@@ -31,47 +31,38 @@ class ValidTimeType(GeneratedsSuper):
     def __init__(self, Start_Time=None, End_Time=None):
         self.Start_Time = Start_Time
         self.End_Time = End_Time
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if ValidTimeType.subclass:
-            return ValidTimeType.subclass(*args_, **kwargs_)
+            return ValidTimeType.subclass(*self, **kwargs_)
         else:
-            return ValidTimeType(*args_, **kwargs_)
+            return ValidTimeType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Start_Time(self): return self.Start_Time
     def set_Start_Time(self, Start_Time): self.Start_Time = Start_Time
     def get_End_Time(self): return self.End_Time
     def set_End_Time(self, End_Time): self.End_Time = End_Time
     def hasContent_(self):
-        if (
-            self.Start_Time is not None or
-            self.End_Time is not None
-            ):
-            return True
-        else:
-            return False
+        return self.Start_Time is not None or self.End_Time is not None
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ValidTimeType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ValidTimeType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='ValidTimeType'):
         pass
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ValidTimeType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Start_Time is not None:
             self.Start_Time.export(lwrite, level, nsmap, namespace_, name_='Start_Time', pretty_print=pretty_print)
         if self.End_Time is not None:
@@ -105,15 +96,12 @@ class CompositeIndicatorExpressionType(GeneratedsSuper):
     superclass = None
     def __init__(self, operator=None, Indicator=None):
         self.operator = _cast(None, operator)
-        if Indicator is None:
-            self.Indicator = []
-        else:
-            self.Indicator = Indicator
-    def factory(*args_, **kwargs_):
+        self.Indicator = [] if Indicator is None else Indicator
+    def factory(self, **kwargs_):
         if CompositeIndicatorExpressionType.subclass:
-            return CompositeIndicatorExpressionType.subclass(*args_, **kwargs_)
+            return CompositeIndicatorExpressionType.subclass(*self, **kwargs_)
         else:
-            return CompositeIndicatorExpressionType(*args_, **kwargs_)
+            return CompositeIndicatorExpressionType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Indicator(self): return self.Indicator
     def set_Indicator(self, Indicator): self.Indicator = Indicator
@@ -122,37 +110,29 @@ class CompositeIndicatorExpressionType(GeneratedsSuper):
     def get_operator(self): return self.operator
     def set_operator(self, operator): self.operator = operator
     def hasContent_(self):
-        if (
-            self.Indicator
-            ):
-            return True
-        else:
-            return False
+        return bool(self.Indicator)
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CompositeIndicatorExpressionType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='CompositeIndicatorExpressionType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='CompositeIndicatorExpressionType'):
         if self.operator is not None and 'operator' not in already_processed:
             already_processed.add('operator')
-            lwrite(' operator=%s' % (quote_attrib(self.operator), ))
+            lwrite(f' operator={quote_attrib(self.operator)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CompositeIndicatorExpressionType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Indicator_ in self.Indicator:
             Indicator_.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
@@ -231,11 +211,11 @@ class TestMechanismType(GeneratedsSuper):
         self.Efficacy = Efficacy
         self.Producer = Producer
         # self.xsi_type = xsi_type
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if TestMechanismType.subclass:
-            return TestMechanismType.subclass(*args_, **kwargs_)
+            return TestMechanismType.subclass(*self, **kwargs_)
         else:
-            return TestMechanismType(*args_, **kwargs_)
+            return TestMechanismType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Efficacy(self): return self.Efficacy
     def set_Efficacy(self, Efficacy): self.Efficacy = Efficacy
@@ -248,45 +228,36 @@ class TestMechanismType(GeneratedsSuper):
     def get_xsi_type(self): return self.xsi_type
     def set_xsi_type(self, xsi_type): self.xsi_type = xsi_type
     def hasContent_(self):
-        if (
-            self.Efficacy is not None and
-            self.Producer is not None
-            ):
-            return True
-        else:
-            return False
+        return self.Efficacy is not None and self.Producer is not None
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TestMechanismType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='TestMechanismType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='TestMechanismType'):
         if self.idref is not None and 'idref' not in already_processed:
             already_processed.add('idref')
-            lwrite(' idref=%s' % (quote_attrib(self.idref), ))
+            lwrite(f' idref={quote_attrib(self.idref)}')
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
-            lwrite(' id=%s' % (quote_attrib(self.id), ))
+            lwrite(f' id={quote_attrib(self.id)}')
         # if self.xsi_type is not None and 'xsi:type' not in already_processed:
         #     already_processed.add('xsi:type')
         #     lwrite('  xsi:type="%s"' % self.xsi_type)
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TestMechanismType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Efficacy is not None:
             self.Efficacy.export(lwrite, level, nsmap, namespace_, name_='Efficacy', pretty_print=pretty_print)
         if self.Producer is not None:
@@ -330,15 +301,12 @@ class SightingsType(GeneratedsSuper):
     superclass = None
     def __init__(self, sightings_count=None, Sighting=None):
         self.sightings_count = _cast(int, sightings_count)
-        if Sighting is None:
-            self.Sighting = []
-        else:
-            self.Sighting = Sighting
-    def factory(*args_, **kwargs_):
+        self.Sighting = [] if Sighting is None else Sighting
+    def factory(self, **kwargs_):
         if SightingsType.subclass:
-            return SightingsType.subclass(*args_, **kwargs_)
+            return SightingsType.subclass(*self, **kwargs_)
         else:
-            return SightingsType(*args_, **kwargs_)
+            return SightingsType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Sighting(self): return self.Sighting
     def set_Sighting(self, Sighting): self.Sighting = Sighting
@@ -347,37 +315,29 @@ class SightingsType(GeneratedsSuper):
     def get_sightings_count(self): return self.sightings_count
     def set_sightings_count(self, sightings_count): self.sightings_count = sightings_count
     def hasContent_(self):
-        if (
-            self.Sighting
-            ):
-            return True
-        else:
-            return False
+        return bool(self.Sighting)
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SightingsType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='SightingsType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='SightingsType'):
         if self.sightings_count is not None and 'sightings_count' not in already_processed:
             already_processed.add('sightings_count')
             lwrite(' sightings_count="%s"' % self.gds_format_integer(self.sightings_count, input_name='sightings_count'))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SightingsType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Sighting_ in self.Sighting:
             Sighting_.export(lwrite, level, nsmap, namespace_, name_='Sighting', pretty_print=pretty_print)
     def build(self, node):
@@ -394,7 +354,7 @@ class SightingsType(GeneratedsSuper):
             try:
                 self.sightings_count = int(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise_parse_error(node, f'Bad integer attribute: {exp}')
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Sighting':
             obj_ = SightingType.factory()
@@ -420,16 +380,13 @@ class SightingType(GeneratedsSuper):
         self.Source = Source
         self.Reference = Reference
         self.Confidence = Confidence
-        if Description is None:
-            self.Description = []
-        else:
-            self.Description = Description
+        self.Description = [] if Description is None else Description
         self.Related_Observables = Related_Observables
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if SightingType.subclass:
-            return SightingType.subclass(*args_, **kwargs_)
+            return SightingType.subclass(*self, **kwargs_)
         else:
-            return SightingType(*args_, **kwargs_)
+            return SightingType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Source(self): return self.Source
     def set_Source(self, Source): self.Source = Source
@@ -448,49 +405,48 @@ class SightingType(GeneratedsSuper):
     def get_timestamp_precision(self): return self.timestamp_precision
     def set_timestamp_precision(self, timestamp_precision): self.timestamp_precision = timestamp_precision
     def hasContent_(self):
-        if (
-            self.Source is not None or
-            self.Reference is not None or
-            self.Confidence is not None or
-            self.Description or
-            self.Related_Observables is not None
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Source is not None
+                or self.Reference is not None
+                or self.Confidence is not None
+                or self.Description
+                or self.Related_Observables is not None
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SightingType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='SightingType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='SightingType'):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             lwrite(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
         if self.timestamp_precision is not None and 'timestamp_precision' not in already_processed:
             already_processed.add('timestamp_precision')
-            lwrite(' timestamp_precision=%s' % (quote_attrib(self.timestamp_precision), ))
+            lwrite(f' timestamp_precision={quote_attrib(self.timestamp_precision)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SightingType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Source is not None:
             self.Source.export(lwrite, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Reference is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(self.Reference), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Reference>{quote_xml(self.Reference)}</{nsmap[namespace_]}:Reference>{eol_}'
+            )
+
         if self.Confidence is not None:
             self.Confidence.export(lwrite, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
         for Description in self.Description:
@@ -511,7 +467,7 @@ class SightingType(GeneratedsSuper):
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
             except ValueError as exp:
-                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+                raise ValueError(f'Bad date-time attribute (timestamp): {exp}')
         value = find_attr_value_('timestamp_precision', node)
         if value is not None and 'timestamp_precision' not in already_processed:
             already_processed.add('timestamp_precision')
@@ -550,48 +506,44 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
             self.Related_Observable = []
         else:
             self.Related_Observable = Related_Observable
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if RelatedObservablesType.subclass:
-            return RelatedObservablesType.subclass(*args_, **kwargs_)
+            return RelatedObservablesType.subclass(*self, **kwargs_)
         else:
-            return RelatedObservablesType(*args_, **kwargs_)
+            return RelatedObservablesType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Related_Observable(self): return self.Related_Observable
     def set_Related_Observable(self, Related_Observable): self.Related_Observable = Related_Observable
     def add_Related_Observable(self, value): self.Related_Observable.append(value)
     def insert_Related_Observable(self, index, value): self.Related_Observable[index] = value
     def hasContent_(self):
-        if (
-            self.Related_Observable or
-            super(RelatedObservablesType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Related_Observable
+                or super(RelatedObservablesType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedObservablesType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='RelatedObservablesType'):
         super(RelatedObservablesType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedObservablesType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', fromsubclass_=False, pretty_print=True):
         super(RelatedObservablesType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Related_Observable_ in self.Related_Observable:
             Related_Observable_.export(lwrite, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
     def build(self, node):
@@ -615,50 +567,39 @@ class TestMechanismsType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Test_Mechanism=None):
-        if Test_Mechanism is None:
-            self.Test_Mechanism = []
-        else:
-            self.Test_Mechanism = Test_Mechanism
-    def factory(*args_, **kwargs_):
+        self.Test_Mechanism = [] if Test_Mechanism is None else Test_Mechanism
+    def factory(self, **kwargs_):
         if TestMechanismsType.subclass:
-            return TestMechanismsType.subclass(*args_, **kwargs_)
+            return TestMechanismsType.subclass(*self, **kwargs_)
         else:
-            return TestMechanismsType(*args_, **kwargs_)
+            return TestMechanismsType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Test_Mechanism(self): return self.Test_Mechanism
     def set_Test_Mechanism(self, Test_Mechanism): self.Test_Mechanism = Test_Mechanism
     def add_Test_Mechanism(self, value): self.Test_Mechanism.append(value)
     def insert_Test_Mechanism(self, index, value): self.Test_Mechanism[index] = value
     def hasContent_(self):
-        if (
-            self.Test_Mechanism
-            ):
-            return True
-        else:
-            return False
+        return bool(self.Test_Mechanism)
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TestMechanismsType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='TestMechanismsType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='TestMechanismsType'):
         pass
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TestMechanismsType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Test_Mechanism_ in self.get_Test_Mechanism():
             Test_Mechanism_.export(lwrite, level, nsmap, namespace_, name_='Test_Mechanism', pretty_print=pretty_print)
     def build(self, node):
@@ -683,52 +624,42 @@ class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Suggested_COA=None):
         super(SuggestedCOAsType, self).__init__(scope=scope)
-        if Suggested_COA is None:
-            self.Suggested_COA = []
-        else:
-            self.Suggested_COA = Suggested_COA
-    def factory(*args_, **kwargs_):
+        self.Suggested_COA = [] if Suggested_COA is None else Suggested_COA
+    def factory(self, **kwargs_):
         if SuggestedCOAsType.subclass:
-            return SuggestedCOAsType.subclass(*args_, **kwargs_)
+            return SuggestedCOAsType.subclass(*self, **kwargs_)
         else:
-            return SuggestedCOAsType(*args_, **kwargs_)
+            return SuggestedCOAsType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Suggested_COA(self): return self.Suggested_COA
     def set_Suggested_COA(self, Suggested_COA): self.Suggested_COA = Suggested_COA
     def add_Suggested_COA(self, value): self.Suggested_COA.append(value)
     def insert_Suggested_COA(self, index, value): self.Suggested_COA[index] = value
     def hasContent_(self):
-        if (
-            self.Suggested_COA or
-            super(SuggestedCOAsType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (self.Suggested_COA or super(SuggestedCOAsType, self).hasContent_())
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SuggestedCOAsType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='SuggestedCOAsType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='SuggestedCOAsType'):
         super(SuggestedCOAsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='SuggestedCOAsType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SuggestedCOAsType', fromsubclass_=False, pretty_print=True):
         super(SuggestedCOAsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Suggested_COA_ in self.Suggested_COA:
             Suggested_COA_.export(lwrite, level, nsmap, namespace_, name_='Suggested_COA', pretty_print=pretty_print)
     def build(self, node):
@@ -753,52 +684,45 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
         super(RelatedIndicatorsType, self).__init__(scope=scope)
-        if Related_Indicator is None:
-            self.Related_Indicator = []
-        else:
-            self.Related_Indicator = Related_Indicator
-    def factory(*args_, **kwargs_):
+        self.Related_Indicator = [] if Related_Indicator is None else Related_Indicator
+    def factory(self, **kwargs_):
         if RelatedIndicatorsType.subclass:
-            return RelatedIndicatorsType.subclass(*args_, **kwargs_)
+            return RelatedIndicatorsType.subclass(*self, **kwargs_)
         else:
-            return RelatedIndicatorsType(*args_, **kwargs_)
+            return RelatedIndicatorsType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Related_Indicator(self): return self.Related_Indicator
     def set_Related_Indicator(self, Related_Indicator): self.Related_Indicator = Related_Indicator
     def add_Related_Indicator(self, value): self.Related_Indicator.append(value)
     def insert_Related_Indicator(self, index, value): self.Related_Indicator[index] = value
     def hasContent_(self):
-        if (
-            self.Related_Indicator or
-            super(RelatedIndicatorsType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Related_Indicator
+                or super(RelatedIndicatorsType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedIndicatorsType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='RelatedIndicatorsType'):
         super(RelatedIndicatorsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedIndicatorsType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', fromsubclass_=False, pretty_print=True):
         super(RelatedIndicatorsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
@@ -844,32 +768,17 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)
         self.Title = Title
-        if Type is None:
-            self.Type = []
-        else:
-            self.Type = Type
-        if Alternative_ID is None:
-            self.Alternative_ID = []
-        else:
-            self.Alternative_ID = Alternative_ID
-        if Description is None:
-            self.Description = []
-        else:
-            self.Description = Description
-        if Short_Description is None:
-            self.Short_Description = []
-        else:
-            self.Short_Description = Short_Description
+        self.Type = [] if Type is None else Type
+        self.Alternative_ID = [] if Alternative_ID is None else Alternative_ID
+        self.Description = [] if Description is None else Description
+        self.Short_Description = [] if Short_Description is None else Short_Description
         if Valid_Time_Position is None:
             self.Valid_Time_Position = []
         else:
             self.Valid_Time_Position = Valid_Time_Position
         self.Observable = Observable
         self.Composite_Indicator_Expression = Composite_Indicator_Expression
-        if Indicated_TTP is None:
-            self.Indicated_TTP = []
-        else:
-            self.Indicated_TTP = Indicated_TTP
+        self.Indicated_TTP = [] if Indicated_TTP is None else Indicated_TTP
         self.Kill_Chain_Phases = Kill_Chain_Phases
         self.Test_Mechanisms = Test_Mechanisms
         self.Likely_Impact = Likely_Impact
@@ -881,11 +790,11 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         self.Related_Campaigns = Related_Campaigns
         self.Related_Packages = Related_Packages
         self.Producer = Producer
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if IndicatorType.subclass:
-            return IndicatorType.subclass(*args_, **kwargs_)
+            return IndicatorType.subclass(*self, **kwargs_)
         else:
-            return IndicatorType(*args_, **kwargs_)
+            return IndicatorType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
@@ -944,48 +853,47 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
-        if (
-            self.Title is not None or
-            self.Type or
-            self.Alternative_ID or
-            self.Description or
-            self.Short_Description or
-            self.Valid_Time_Position or
-            self.Observable is not None or
-            self.Composite_Indicator_Expression is not None or
-            self.Indicated_TTP or
-            self.Kill_Chain_Phases is not None or
-            self.Test_Mechanisms is not None or
-            self.Likely_Impact is not None or
-            self.Suggested_COAs is not None or
-            self.Handling is not None or
-            self.Confidence is not None or
-            self.Sightings is not None or
-            self.Related_Indicators is not None or
-            self.Related_Campaigns is not None or
-            self.Related_Packages is not None or
-            self.Producer is not None or
-            super(IndicatorType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Title is not None
+                or self.Type
+                or self.Alternative_ID
+                or self.Description
+                or self.Short_Description
+                or self.Valid_Time_Position
+                or self.Observable is not None
+                or self.Composite_Indicator_Expression is not None
+                or self.Indicated_TTP
+                or self.Kill_Chain_Phases is not None
+                or self.Test_Mechanisms is not None
+                or self.Likely_Impact is not None
+                or self.Suggested_COAs is not None
+                or self.Handling is not None
+                or self.Confidence is not None
+                or self.Sightings is not None
+                or self.Related_Indicators is not None
+                or self.Related_Campaigns is not None
+                or self.Related_Packages is not None
+                or self.Producer is not None
+                or super(IndicatorType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='Indicator', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='Indicator')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='Indicator'):
         super(IndicatorType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='Indicator')
         #if 'xmlns' not in already_processed:
@@ -1001,21 +909,24 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             lwrite(' negate="%s"' % self.gds_format_boolean(self.negate, input_name='negate'))
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
-            lwrite(' version=%s' % (quote_attrib(self.version), ))
+            lwrite(f' version={quote_attrib(self.version)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IndicatorType', fromsubclass_=False, pretty_print=True):
         super(IndicatorType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Title>{quote_xml(self.Title)}</{nsmap[namespace_]}:Title>{eol_}'
+            )
+
         for Type_ in self.Type:
             Type_.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         for Alternative_ID_ in self.Alternative_ID:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], quote_xml(Alternative_ID_), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Alternative_ID>{quote_xml(Alternative_ID_)}</{nsmap[namespace_]}:Alternative_ID>{eol_}'
+            )
+
         for Description in self.Description:
             Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         for Short_Description in self.Short_Description:
@@ -1023,7 +934,14 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         for Valid_Time_Position_ in self.Valid_Time_Position:
             Valid_Time_Position_.export(lwrite, level, nsmap, namespace_, name_='Valid_Time_Position', pretty_print=pretty_print)
         if self.Observable is not None:
-            self.Observable.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
+            self.Observable.export(
+                lwrite,
+                level,
+                f"{nsmap[namespace_]}:",
+                name_='Observable',
+                pretty_print=pretty_print,
+            )
+
         if self.Composite_Indicator_Expression is not None:
             self.Composite_Indicator_Expression.export(lwrite, level, nsmap, namespace_, name_='Composite_Indicator_Expression', pretty_print=pretty_print)
         for Indicated_TTP_ in self.Indicated_TTP:
@@ -1160,52 +1078,45 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Campaign=None):
         super(RelatedCampaignReferencesType, self).__init__(scope=scope)
-        if Related_Campaign is None:
-            self.Related_Campaign = []
-        else:
-            self.Related_Campaign = Related_Campaign
-    def factory(*args_, **kwargs_):
+        self.Related_Campaign = [] if Related_Campaign is None else Related_Campaign
+    def factory(self, **kwargs_):
         if RelatedCampaignReferencesType.subclass:
-            return RelatedCampaignReferencesType.subclass(*args_, **kwargs_)
+            return RelatedCampaignReferencesType.subclass(*self, **kwargs_)
         else:
-            return RelatedCampaignReferencesType(*args_, **kwargs_)
+            return RelatedCampaignReferencesType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Related_Campaign(self): return self.Related_Campaign
     def set_Related_Campaign(self, Related_Campaign): self.Related_Campaign = Related_Campaign
     def add_Related_Campaign(self, value): self.Related_Campaign.append(value)
     def insert_Related_Campaign(self, index, value): self.Related_Campaign[index] = value
     def hasContent_(self):
-        if (
-            self.Related_Campaign or
-            super(RelatedCampaignReferencesType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Related_Campaign
+                or super(RelatedCampaignReferencesType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferencesType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedCampaignReferencesType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='RelatedCampaignReferencesType'):
         super(RelatedCampaignReferencesType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedCampaignReferencesType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferencesType', fromsubclass_=False, pretty_print=True):
         super(RelatedCampaignReferencesType, self).exportChildren(lwrite, level, nsmap, stix_common_binding.XML_NS, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Related_Campaign_ in self.Related_Campaign:
             Related_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Related_Campaign', pretty_print=pretty_print)
     def build(self, node):

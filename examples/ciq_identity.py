@@ -79,7 +79,7 @@ def main():
     # Add our Indicator object. The add() method will inspect the input and
     # append it to the `stix_package.indicators` collection.
     stix_package.add(indicator)
-    
+
     # Print the XML!
     print(stix_package.to_xml())
 

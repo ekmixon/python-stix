@@ -746,7 +746,7 @@ def check_operator(composite_indicator_exp, value):
     if not value:
         raise ValueError("operator must not be None or empty")
     elif value not in allowed:
-        raise ValueError("operator must be one of: %s" % allowed)
+        raise ValueError(f"operator must be one of: {allowed}")
     else:
         return
 
@@ -825,7 +825,7 @@ class _RelatedCampaignRefList(typedlist.TypedList):
             return RelatedCampaignRef(CampaignRef(idref=value.id_))
 
         msg = "Cannot insert object of type '%s' into '%s'"
-        msg = msg % (type(value), self.__class__.__name__)
+        msg %= (type(value), self.__class__.__name__)
         raise TypeError(msg)
 
 

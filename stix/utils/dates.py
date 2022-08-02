@@ -36,9 +36,7 @@ def serialize_value(value):
         An ISO8601 formatted timestamp string.
 
     """
-    if not value:
-        return None
-    return value.isoformat()
+    return value.isoformat() if value else None
 
 
 def parse_date(value):

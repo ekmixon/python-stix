@@ -40,10 +40,11 @@ class KillChain(stix.Entity):
         if self is other:
             return True
 
-        if not isinstance(other, self.__class__):
-            return False
-
-        return other.to_dict() == self.to_dict()
+        return (
+            other.to_dict() == self.to_dict()
+            if isinstance(other, self.__class__)
+            else False
+        )
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -83,10 +84,11 @@ class KillChainPhase(stix.Entity):
         if other is self:
             return True
 
-        if not isinstance(other, KillChainPhase):
-            return False
-
-        return other.to_dict() == self.to_dict()
+        return (
+            other.to_dict() == self.to_dict()
+            if isinstance(other, KillChainPhase)
+            else False
+        )
 
     def __ne__(self, other):
         return not self.__eq__(other)

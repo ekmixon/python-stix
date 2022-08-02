@@ -19,10 +19,7 @@ def _is_skippable(owner, varname, varobj):
     if varname == "_parent" and isinstance(owner, ObjectProperties):
         return True
 
-    if varname in ("__input_namespaces__", "__input_schemalocations__"):
-        return True
-
-    return False
+    return varname in ("__input_namespaces__", "__input_schemalocations__")
 
 
 def _iter_vars(obj):
@@ -49,8 +46,7 @@ def iterwalk(obj):
             return
 
         yield item
-        for descendant in iterwalk(item):
-            yield descendant
+        yield from iterwalk(item)
 
     for varname, varobj in _iter_vars(obj):
         if _is_skippable(obj, varname, varobj):
@@ -58,13 +54,10 @@ def iterwalk(obj):
 
         if is_sequence(varobj) and not is_entitylist(varobj):
             for item in varobj:
-                for descendant in yield_and_walk(item):
-                    yield descendant
-
+                yield from yield_and_walk(item)
             continue
 
-        for descendant in yield_and_walk(varobj):
-            yield descendant
+        yield from yield_and_walk(varobj)
 
 
 def iterpath(obj, path=None):
@@ -85,8 +78,7 @@ def iterpath(obj, path=None):
         if item is None:
             return
 
-        for path_info in iterpath(item, path):
-            yield path_info
+        yield from iterpath(item, path)
 
     if path is None:
         path = []
@@ -99,15 +91,10 @@ def iterpath(obj, path=None):
 
         if varname == "_inner" and is_entitylist(obj):
             for item in varobj:
-                for path_info in iterpath(item, path):
-                    yield path_info
+                yield from iterpath(item, path)
         elif is_sequence(varobj) and not is_entitylist(varobj):
             for item in varobj:
-                for path_info in yield_and_descend(varname, item):
-                    yield path_info
-
+                yield from yield_and_descend(varname, item)
         else:
-            for path_info in yield_and_descend(varname, varobj):
-                yield path_info
-
+            yield from yield_and_descend(varname, varobj)
     path.pop()

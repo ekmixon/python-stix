@@ -39,7 +39,7 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         slist = []
 
         for ordinality in range(1, 10):
-            text = common.StructuredText("Ordinality %s" % ordinality)
+            text = common.StructuredText(f"Ordinality {ordinality}")
             text.ordinality = ordinality
             slist.append(text)
 
@@ -60,7 +60,7 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         slist = common.StructuredTextList()
 
         for o in ords:
-            text =  common.StructuredText("orig: %s" % o, o)
+            text = common.StructuredText(f"orig: {o}", o)
             slist.add(text)
 
         # test that original assignment worked correctly

@@ -77,11 +77,7 @@ def round_trip(o, output=False, list_=False):
         print("-" * 40)
 
     # 1. cybox.Entity -> dict/list
-    if list_:
-        d = o.to_list()
-    else:
-        d = o.to_dict()
-
+    d = o.to_list() if list_ else o.to_dict()
     # 2. dict/list -> JSON string
     json_string = json.dumps(d)
 
@@ -96,11 +92,7 @@ def round_trip(o, output=False, list_=False):
     d2 = json.loads(json_string)
 
     # 4. dict/list -> cybox.Entity
-    if list_:
-        o2 = klass.from_list(d2)
-    else:
-        o2 = klass.from_dict(d2)
-
+    o2 = klass.from_list(d2) if list_ else klass.from_dict(d2)
     # 5. Entity -> Bindings Object
     ns_info = NamespaceCollector()
     xobj = o2.to_obj(ns_info=ns_info)
@@ -113,7 +105,7 @@ def round_trip(o, output=False, list_=False):
             xml_string = xml_string.decode(ExternalEncoding)
 
     except KeyError as ex:
-        print(str(ex))
+        print(ex)
         ns_info.finalize()
         print(ns_info.binding_namespaces)
         raise ex
@@ -128,10 +120,7 @@ def round_trip(o, output=False, list_=False):
     # 7. XML String -> Bindings Object
     xobj2 = klass._binding.parseString(xml_string)
 
-    # 8. Bindings object -> cybox.Entity
-    o3 = klass.from_obj(xobj2)
-
-    return o3
+    return klass.from_obj(xobj2)
 
 
 class EntityTestCase(object):

@@ -33,11 +33,11 @@ class AISMarkingStructure(data_marking_binding.MarkingStructureType):
         self.Is_Proprietary = Is_Proprietary
         self.Not_Proprietary = Not_Proprietary
 
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if AISMarkingStructure.subclass:
-            return AISMarkingStructure.subclass(*args_, **kwargs_)
+            return AISMarkingStructure.subclass(*self, **kwargs_)
         else:
-            return AISMarkingStructure(*args_, **kwargs_)
+            return AISMarkingStructure(*self, **kwargs_)
     factory = staticmethod(factory)
 
     def get_Is_Proprietary(self):
@@ -53,31 +53,30 @@ class AISMarkingStructure(data_marking_binding.MarkingStructureType):
         self.Not_Proprietary = Not_Proprietary
 
     def hasContent_(self):
-        if (
-            self.Is_Proprietary is not None or
-            self.Not_Proprietary is not None or
-            super(AISMarkingStructure, self).hasContent_()
-        ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Is_Proprietary is not None
+                or self.Not_Proprietary is not None
+                or super(AISMarkingStructure, self).hasContent_()
+            )
+        )
 
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISMarkingStructure', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AISMarkingStructure')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
 
     def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='AISMarkingStructure'):
         super(AISMarkingStructure, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AISMarkingStructure')
@@ -88,10 +87,7 @@ class AISMarkingStructure(data_marking_binding.MarkingStructureType):
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISMarkingStructure', fromsubclass_=False, pretty_print=True):
         super(AISMarkingStructure, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Is_Proprietary is not None:
             self.Is_Proprietary.export(lwrite, level, nsmap, namespace_, name_='Is_Proprietary', pretty_print=pretty_print)
         if self.Not_Proprietary is not None:
@@ -130,11 +126,11 @@ class IsProprietary(GeneratedsSuper):
         self.AISConsent = AISConsent
         self.TLPMarking = TLPMarking
 
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if IsProprietary.subclass:
-            return IsProprietary.subclass(*args_, **kwargs_)
+            return IsProprietary.subclass(*self, **kwargs_)
         else:
-            return IsProprietary(*args_, **kwargs_)
+            return IsProprietary(*self, **kwargs_)
     factory = staticmethod(factory)
 
     def get_AISConsent(self):
@@ -156,30 +152,24 @@ class IsProprietary(GeneratedsSuper):
         self.CISA_Proprietary = CISA_Proprietary
 
     def hasContent_(self):
-        if (
-            self.AISConsent is not None or
-            self.TLPMarking is not None
-        ):
-            return True
-        else:
-            return False
+        return self.AISConsent is not None or self.TLPMarking is not None
 
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IsProprietary', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='IsProprietary')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
 
     def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='IsProprietary'):
         if self.CISA_Proprietary is not None and 'CISA_Proprietary' not in already_processed:
@@ -187,10 +177,7 @@ class IsProprietary(GeneratedsSuper):
             lwrite(' CISA_Proprietary="%s"' % self.gds_format_boolean(self.CISA_Proprietary, input_name='CISA_Proprietary'))
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IsProprietary', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.AISConsent is not None:
             self.AISConsent.export(lwrite, level, nsmap, namespace_, name_='AISConsent', pretty_print=pretty_print)
         if self.TLPMarking is not None:
@@ -236,11 +223,11 @@ class NotProprietary(GeneratedsSuper):
         self.AISConsent = AISConsent
         self.TLPMarking = TLPMarking
 
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if NotProprietary.subclass:
-            return NotProprietary.subclass(*args_, **kwargs_)
+            return NotProprietary.subclass(*self, **kwargs_)
         else:
-            return NotProprietary(*args_, **kwargs_)
+            return NotProprietary(*self, **kwargs_)
     factory = staticmethod(factory)
 
     def get_AISConsent(self):
@@ -262,30 +249,24 @@ class NotProprietary(GeneratedsSuper):
         self.CISA_Proprietary = CISA_Proprietary
 
     def hasContent_(self):
-        if (
-            self.AISConsent is not None or
-            self.TLPMarking is not None
-        ):
-            return True
-        else:
-            return False
+        return self.AISConsent is not None or self.TLPMarking is not None
 
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='NotProprietary', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='NotProprietary')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
 
     def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='NotProprietary'):
         if self.CISA_Proprietary is not None and 'CISA_Proprietary' not in already_processed:
@@ -293,10 +274,7 @@ class NotProprietary(GeneratedsSuper):
             lwrite(' CISA_Proprietary="%s"' % self.gds_format_boolean(self.CISA_Proprietary, input_name='CISA_Proprietary'))
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='NotProprietary', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.AISConsent is not None:
             self.AISConsent.export(lwrite, level, nsmap, namespace_, name_='AISConsent', pretty_print=pretty_print)
         if self.TLPMarking is not None:
@@ -339,13 +317,12 @@ class AISConsentType(GeneratedsSuper):
 
     def __init__(self, consent=None):
         self.consent = _cast(None, consent)
-        pass
 
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if AISConsentType.subclass:
-            return AISConsentType.subclass(*args_, **kwargs_)
+            return AISConsentType.subclass(*self, **kwargs_)
         else:
-            return AISConsentType(*args_, **kwargs_)
+            return AISConsentType(*self, **kwargs_)
     factory = staticmethod(factory)
 
     def get_consent(self):
@@ -355,33 +332,28 @@ class AISConsentType(GeneratedsSuper):
         self.consent = consent
 
     def hasContent_(self):
-        if (
-
-        ):
-            return True
-        else:
-            return False
+        return False
 
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISConsentType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AISConsentType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
 
     def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='AISConsentType'):
         if self.consent is not None and 'consent' not in already_processed:
             already_processed.add('consent')
-            lwrite(' consent=%s' % (quote_attrib(self.consent), ))
+            lwrite(f' consent={quote_attrib(self.consent)}')
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISConsentType', fromsubclass_=False, pretty_print=True):
         pass
@@ -411,13 +383,12 @@ class TLPMarkingType(GeneratedsSuper):
 
     def __init__(self, color=None):
         self.color = _cast(None, color)
-        pass
 
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if TLPMarkingType.subclass:
-            return TLPMarkingType.subclass(*args_, **kwargs_)
+            return TLPMarkingType.subclass(*self, **kwargs_)
         else:
-            return TLPMarkingType(*args_, **kwargs_)
+            return TLPMarkingType(*self, **kwargs_)
     factory = staticmethod(factory)
 
     def get_color(self):
@@ -427,33 +398,28 @@ class TLPMarkingType(GeneratedsSuper):
         self.color = color
 
     def hasContent_(self):
-        if (
-
-        ):
-            return True
-        else:
-            return False
+        return False
 
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TLPMarkingType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='TLPMarkingType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
 
     def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='TLPMarkingType'):
         if self.color is not None and 'color' not in already_processed:
             already_processed.add('color')
-            lwrite(' color=%s' % (quote_attrib(self.color), ))
+            lwrite(f' color={quote_attrib(self.color)}')
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TLPMarkingType', fromsubclass_=False, pretty_print=True):
         pass

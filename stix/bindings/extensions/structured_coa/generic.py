@@ -39,17 +39,14 @@ class GenericStructuredCOAType(StructuredCOAType):
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
         self.reference_location = _cast(None, reference_location)
-        if Description is None:
-            self.Description = []
-        else:
-            self.Description = Description
+        self.Description = [] if Description is None else Description
         self.Type = Type
         self.Specification = Specification
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if GenericStructuredCOAType.subclass:
-            return GenericStructuredCOAType.subclass(*args_, **kwargs_)
+            return GenericStructuredCOAType.subclass(*self, **kwargs_)
         else:
-            return GenericStructuredCOAType(*args_, **kwargs_)
+            return GenericStructuredCOAType(*self, **kwargs_)
     factory = staticmethod(factory)
     def add_Description(self, Description): self.Description.append(Description)
     def insert_Description(self, index, Description): self.Description[index] = Description
@@ -62,31 +59,30 @@ class GenericStructuredCOAType(StructuredCOAType):
     def get_reference_location(self): return self.reference_location
     def set_reference_location(self, reference_location): self.reference_location = reference_location
     def hasContent_(self):
-        if (
-            self.Description or
-            self.Type is not None or
-            self.Specification is not None or
-            super(GenericStructuredCOAType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Description
+                or self.Type is not None
+                or self.Specification is not None
+                or super(GenericStructuredCOAType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='GenericStructuredCOAType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType'):
         super(GenericStructuredCOAType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='GenericStructuredCOAType')
         # if 'xmlns' not in already_processed:
@@ -99,13 +95,10 @@ class GenericStructuredCOAType(StructuredCOAType):
         #     lwrite(xsi_type)
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
-            lwrite(' reference_location=%s' % (quote_attrib(self.reference_location), ))
+            lwrite(f' reference_location={quote_attrib(self.reference_location)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', fromsubclass_=False, pretty_print=True):
         super(GenericStructuredCOAType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Description in self.Description:
             Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Type is not None:

@@ -46,5 +46,5 @@ class Profiles(compat.MutableSequence, stix.Entity):
             return None
 
         obj = cls()
-        obj.profile = [x for x in cls_dict]
+        obj.profile = list(cls_dict)
         return obj

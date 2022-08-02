@@ -11,14 +11,14 @@ from stix.common import EncodedCDATA
 class CDATATests(unittest.TestCase):
     def test_strip_cdata(self):
         initial = "TESTTESTTEST"
-        wrapped = "<![CDATA[%s]]>" % initial
+        wrapped = f"<![CDATA[{initial}]]>"
         stripped = utils.strip_cdata(wrapped)
 
         self.assertEqual(stripped, initial)
 
     def test_wrap_cdata(self):
         initial = "TESTTESTTEST"
-        wrapped = "<![CDATA[%s]]>" % initial
+        wrapped = f"<![CDATA[{initial}]]>"
         cdata = utils.cdata(initial)
 
         self.assertEqual(wrapped, cdata)
@@ -45,7 +45,7 @@ class EncodedCDATATests(EntityTestCase, unittest.TestCase):
 
     def test_strip_cdata(self):
         stripped = "TESTTEST"
-        wrapped = '<![CDATA[%s]]>' % stripped
+        wrapped = f'<![CDATA[{stripped}]]>'
 
         d = {
             'value': wrapped,
@@ -57,7 +57,7 @@ class EncodedCDATATests(EntityTestCase, unittest.TestCase):
 
     def test_set_value(self):
         stripped = "TESTTEST"
-        wrapped = '<![CDATA[%s]]>' % stripped
+        wrapped = f'<![CDATA[{stripped}]]>'
 
         ecdata = EncodedCDATA()
         ecdata.value = wrapped

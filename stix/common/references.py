@@ -45,5 +45,5 @@ class References(compat.MutableSequence, stix.Entity):
             return None
 
         obj = cls()
-        obj.reference = [x for x in cls_dict]
+        obj.reference = list(cls_dict)
         return obj

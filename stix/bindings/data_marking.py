@@ -28,50 +28,39 @@ class MarkingType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Marking=None):
-        if Marking is None:
-            self.Marking = []
-        else:
-            self.Marking = Marking
-    def factory(*args_, **kwargs_):
+        self.Marking = [] if Marking is None else Marking
+    def factory(self, **kwargs_):
         if MarkingType.subclass:
-            return MarkingType.subclass(*args_, **kwargs_)
+            return MarkingType.subclass(*self, **kwargs_)
         else:
-            return MarkingType(*args_, **kwargs_)
+            return MarkingType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Marking(self): return self.Marking
     def set_Marking(self, Marking): self.Marking = Marking
     def add_Marking(self, value): self.Marking.append(value)
     def insert_Marking(self, index, value): self.Marking[index] = value
     def hasContent_(self):
-        if (
-            self.Marking
-            ):
-            return True
-        else:
-            return False
+        return bool(self.Marking)
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='MarkingType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='marking:', name_='MarkingType'):
         pass
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         for Marking_ in self.Marking:
             Marking_.export(lwrite, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
     def build(self, node):
@@ -145,12 +134,11 @@ class MarkingStructureType(GeneratedsSuper):
         self.marking_model_ref = _cast(None, marking_model_ref)
         self.marking_model_name = _cast(None, marking_model_name)
         self.id = _cast(None, id)
-        pass
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if MarkingStructureType.subclass:
-            return MarkingStructureType.subclass(*args_, **kwargs_)
+            return MarkingStructureType.subclass(*self, **kwargs_)
         else:
-            return MarkingStructureType(*args_, **kwargs_)
+            return MarkingStructureType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_idref(self): return self.idref
     def set_idref(self, idref): self.idref = idref
@@ -161,40 +149,35 @@ class MarkingStructureType(GeneratedsSuper):
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
     def hasContent_(self):
-        if (
-
-            ):
-            return True
-        else:
-            return False
+        return False
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='MarkingStructureType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='marking:', name_='MarkingStructureType'):
         if self.idref is not None and 'idref' not in already_processed:
             already_processed.add('idref')
-            lwrite(' idref=%s' % (quote_attrib(self.idref), ))
+            lwrite(f' idref={quote_attrib(self.idref)}')
         if self.marking_model_ref is not None and 'marking_model_ref' not in already_processed:
             already_processed.add('marking_model_ref')
-            lwrite(' marking_model_ref=%s' % (quote_attrib(self.marking_model_ref), ))
+            lwrite(f' marking_model_ref={quote_attrib(self.marking_model_ref)}')
         if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
-            lwrite(' marking_model_name=%s' % (quote_attrib(self.marking_model_name), ))
+            lwrite(f' marking_model_name={quote_attrib(self.marking_model_name)}')
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
-            lwrite(' id=%s' % (quote_attrib(self.id), ))
+            lwrite(f' id={quote_attrib(self.id)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -237,16 +220,13 @@ class MarkingSpecificationType(GeneratedsSuper):
         self.id = _cast(None, id)
         self.version = _cast(None, version)
         self.Controlled_Structure = Controlled_Structure
-        if Marking_Structure is None:
-            self.Marking_Structure = []
-        else:
-            self.Marking_Structure = Marking_Structure
+        self.Marking_Structure = [] if Marking_Structure is None else Marking_Structure
         self.Information_Source = Information_Source
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if MarkingSpecificationType.subclass:
-            return MarkingSpecificationType.subclass(*args_, **kwargs_)
+            return MarkingSpecificationType.subclass(*self, **kwargs_)
         else:
-            return MarkingSpecificationType(*args_, **kwargs_)
+            return MarkingSpecificationType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Controlled_Structure(self): return self.Controlled_Structure
     def set_Controlled_Structure(self, Controlled_Structure): self.Controlled_Structure = Controlled_Structure
@@ -263,48 +243,47 @@ class MarkingSpecificationType(GeneratedsSuper):
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
-        if (
-            self.Controlled_Structure is not None or
-            self.Marking_Structure or
-            self.Information_Source is not None
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Controlled_Structure is not None
+                or self.Marking_Structure
+                or self.Information_Source is not None
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='MarkingSpecificationType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='marking:', name_='MarkingSpecificationType'):
         if self.idref is not None and 'idref' not in already_processed:
             already_processed.add('idref')
-            lwrite(' idref=%s' % (quote_attrib(self.idref), ))
+            lwrite(f' idref={quote_attrib(self.idref)}')
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
-            lwrite(' id=%s' % (quote_attrib(self.id), ))
+            lwrite(f' id={quote_attrib(self.id)}')
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
-            lwrite(' version=%s' % (quote_attrib(self.version), ))
+            lwrite(f' version={quote_attrib(self.version)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
         if self.Controlled_Structure is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], quote_xml(self.Controlled_Structure), nsmap[namespace_], eol_))
+            eol_ = '\n' if pretty_print else ''
+            lwrite(
+                f'<{nsmap[namespace_]}:Controlled_Structure>{quote_xml(self.Controlled_Structure)}</{nsmap[namespace_]}:Controlled_Structure>{eol_}'
+            )
+
         for Marking_Structure_ in self.get_Marking_Structure():
             Marking_Structure_.export(lwrite, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
         if self.Information_Source is not None:

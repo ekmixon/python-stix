@@ -38,38 +38,37 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.ioc = ioc
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if OpenIOC2010TestMechanismType.subclass:
-            return OpenIOC2010TestMechanismType.subclass(*args_, **kwargs_)
+            return OpenIOC2010TestMechanismType.subclass(*self, **kwargs_)
         else:
-            return OpenIOC2010TestMechanismType(*args_, **kwargs_)
+            return OpenIOC2010TestMechanismType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_ioc(self): return self.ioc
     def set_ioc(self, ioc): self.ioc = ioc
     def hasContent_(self):
-        if (
-            self.ioc is not None or
-            super(OpenIOC2010TestMechanismType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.ioc is not None
+                or super(OpenIOC2010TestMechanismType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='OpenIOC2010TestMechanismType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='OpenIOC2010TestMechanismType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='', name_='OpenIOC2010TestMechanismType'):
         super(OpenIOC2010TestMechanismType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='OpenIOC2010TestMechanismType')
         # if 'xmlns' not in already_processed:
@@ -82,10 +81,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='OpenIOC2010TestMechanismType', fromsubclass_=False, pretty_print=True):
         super(OpenIOC2010TestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.ioc is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite(etree_.tostring(self.ioc, pretty_print=pretty_print).decode())

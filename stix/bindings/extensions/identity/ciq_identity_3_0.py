@@ -38,15 +38,12 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
         super(CIQIdentity3_0InstanceType, self).__init__(idref=idref, id=id, Name=Name, Related_Identities=Related_Identities)
         self.Specification = Specification
-        if Role is None:
-            self.Role = []
-        else:
-            self.Role = Role
-    def factory(*args_, **kwargs_):
+        self.Role = [] if Role is None else Role
+    def factory(self, **kwargs_):
         if CIQIdentity3_0InstanceType.subclass:
-            return CIQIdentity3_0InstanceType.subclass(*args_, **kwargs_)
+            return CIQIdentity3_0InstanceType.subclass(*self, **kwargs_)
         else:
-            return CIQIdentity3_0InstanceType(*args_, **kwargs_)
+            return CIQIdentity3_0InstanceType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Specification(self): return self.Specification
     def set_Specification(self, Specification): self.Specification = Specification
@@ -55,30 +52,29 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     def add_Role(self, value): self.Role.append(value)
     def insert_Role(self, index, value): self.Role[index] = value
     def hasContent_(self):
-        if (
-            self.Specification is not None or
-            self.Role or
-            super(CIQIdentity3_0InstanceType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Specification is not None
+                or self.Role
+                or super(CIQIdentity3_0InstanceType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CIQIdentity3.0InstanceType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='CIQIdentity3.0InstanceType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='', name_='CIQIdentity3.0InstanceType'):
         super(CIQIdentity3_0InstanceType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='CIQIdentity3.0InstanceType')
 #         if 'xmlns' not in already_processed:
@@ -90,20 +86,19 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
 #             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
 #             lwrite(xsi_type)
         if self.xsi_type is not None:
-            lwrite(' xsi:type=%s' % quote_attrib(self.xsi_type))
+            lwrite(f' xsi:type={quote_attrib(self.xsi_type)}')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CIQIdentity3.0InstanceType', fromsubclass_=False, pretty_print=True):
         super(CIQIdentity3_0InstanceType, self).exportChildren(lwrite, level, nsmap, stix_common_binding.XML_NS, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         if self.Specification is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite(etree_.tostring(self.Specification, pretty_print=pretty_print).decode())
             #self.Specification.export(lwrite, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
         for Role_ in self.Role:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], quote_xml(Role_), nsmap[namespace_], eol_))
+            lwrite(
+                f'<{nsmap[namespace_]}:Role>{quote_xml(Role_)}</{nsmap[namespace_]}:Role>{eol_}'
+            )
     def build(self, node):
         self.__sourcenode__ = node
         already_processed = set()

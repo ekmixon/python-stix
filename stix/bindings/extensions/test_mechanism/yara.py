@@ -39,41 +39,40 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
         super(YaraTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.Version = Version
         self.Rule = Rule
-    def factory(*args_, **kwargs_):
+    def factory(self, **kwargs_):
         if YaraTestMechanismType.subclass:
-            return YaraTestMechanismType.subclass(*args_, **kwargs_)
+            return YaraTestMechanismType.subclass(*self, **kwargs_)
         else:
-            return YaraTestMechanismType(*args_, **kwargs_)
+            return YaraTestMechanismType(*self, **kwargs_)
     factory = staticmethod(factory)
     def get_Version(self): return self.Version
     def set_Version(self, Version): self.Version = Version
     def get_Rule(self): return self.Rule
     def set_Rule(self, Rule): self.Rule = Rule
     def hasContent_(self):
-        if (
-            self.Version is not None or
-            self.Rule is not None or
-            super(YaraTestMechanismType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
+        return bool(
+            (
+                self.Version is not None
+                or self.Rule is not None
+                or super(YaraTestMechanismType, self).hasContent_()
+            )
+        )
     def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='YaraTestMechanismType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
+        eol_ = '\n' if pretty_print else ''
         showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        lwrite(
+            f"<{nsmap[namespace_]}:{name_}{namespacedef_ and f' {namespacedef_}' or ''}"
+        )
+
         already_processed = set()
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='YaraTestMechanismType')
         if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
+            lwrite(f'>{eol_}')
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite(f'</{nsmap[namespace_]}:{name_}>{eol_}')
         else:
-            lwrite('/>%s' % (eol_, ))
+            lwrite(f'/>{eol_}')
     def exportAttributes(self, lwrite, level, already_processed, namespace_='yaraTM:', name_='YaraTestMechanismType'):
         super(YaraTestMechanismType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='YaraTestMechanismType')
         # if 'xmlns' not in already_processed:
@@ -86,13 +85,13 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='YaraTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(YaraTestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
         if self.Version is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], quote_xml(self.Version), nsmap[namespace_], eol_))
+            eol_ = '\n' if pretty_print else ''
+            lwrite(
+                f'<{nsmap[namespace_]}:Version>{quote_xml(self.Version)}</{nsmap[namespace_]}:Version>{eol_}'
+            )
+
         if self.Rule is not None:
             self.Rule.export(lwrite, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
     def build(self, node):

@@ -175,10 +175,7 @@ class Entity(entities.Entity):
         # Ensure that the StringIO buffer is unicode
         s = text_type(sio.getvalue())
 
-        if encoding:
-            return s.encode(encoding)
-
-        return s
+        return s.encode(encoding) if encoding else s
 
     def walk(self):
         return utils.walk.iterwalk(self)
@@ -383,7 +380,7 @@ class BaseCoreComponent(Entity):
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = utils.dates.now() if not idref else None
+            self.timestamp = None if idref else utils.dates.now()
 
     @property
     def description(self):

@@ -30,14 +30,11 @@ ALLOWED_SCOPE = ('inclusive', 'exclusive')
 
 
 def validate_scope(instance, value):
-    if not value:
+    if not value or value in ALLOWED_SCOPE:
         return
-    elif value in ALLOWED_SCOPE:
-        return
-    else:
-        msg = "Scope must be one of {0}. Received '{1}'"
-        msg = msg.format(ALLOWED_SCOPE, value)
-        raise ValueError(msg)
+    msg = "Scope must be one of {0}. Received '{1}'"
+    msg = msg.format(ALLOWED_SCOPE, value)
+    raise ValueError(msg)
 
 
 class GenericRelationship(stix.Entity):

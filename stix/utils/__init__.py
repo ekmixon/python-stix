@@ -29,10 +29,8 @@ def ignored(*exceptions):
     exists in Python 3.
 
     """
-    try:
+    with contextlib.suppress(exceptions):
         yield
-    except exceptions:
-        pass
 
 
 def raise_warnings(func):
@@ -81,10 +79,7 @@ def is_cdata(text):
         False
 
     """
-    if not text:
-        return False
-
-    return CDATA_START in text
+    return CDATA_START in text if text else False
 
 
 def strip_cdata(text):
@@ -128,8 +123,7 @@ def cdata(text):
     if is_cdata(text):
         text = strip_cdata(text)
 
-    escaped = "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
-    return escaped
+    return "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
 
 
 def is_stix(entity):
@@ -173,10 +167,7 @@ def private_name(name):
     one there.
 
     """
-    if name.startswith("_"):
-        return name
-
-    return "_" + name
+    return name if name.startswith("_") else f"_{name}"
 
 
 def attr_name(name):
@@ -211,10 +202,7 @@ def key_name(name):
     """
     name = attr_name(name)
 
-    if name.endswith("_"):
-        return name[:-1]
-
-    return name
+    return name[:-1] if name.endswith("_") else name
 
 
 def is_sequence(item):
@@ -230,11 +218,7 @@ def check_version(expected, found):
     `expected`.
 
     """
-    if is_sequence(expected):
-        is_good = found in expected
-    else:
-        is_good = (found == expected)
-
+    is_good = found in expected if is_sequence(expected) else (found == expected)
     if not is_good:
         error = "Version '{0}' is invalid. Expected {1}."
         error = error.format(found, expected)

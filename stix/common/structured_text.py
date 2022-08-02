@@ -52,13 +52,11 @@ class StructuredText(stix.Entity):
         self.ordinality = ordinality
 
     def is_plain(self):
-        plain = (
-            (not self.id_) and
-            (not self.structuring_format) and
-            (self.ordinality is None)
+        return (
+            (not self.id_)
+            and (not self.structuring_format)
+            and (self.ordinality is None)
         )
-
-        return plain
 
     def to_dict(self):
         """Converts this object into a dictionary representation.
@@ -69,10 +67,7 @@ class StructuredText(stix.Entity):
 
         """
         # Return a plain string if there is no format specified.
-        if self.is_plain():
-            return self.value
-        else:
-            return super(StructuredText, self).to_dict()
+        return self.value if self.is_plain() else super(StructuredText, self).to_dict()
 
     def __str__(self):
         """Returns a UTF-8 encoded string representation of the ``value``.
@@ -142,12 +137,7 @@ class StructuredTextList(stix.TypedCollection, Sequence):
         ``None`` if not found.
 
         """
-        for text in self._inner:
-            if text.id_ == id:
-                return text
-
-        # Not found. Return None.
-        return None
+        return next((text for text in self._inner if text.id_ == id), None)
 
     def reset(self):
         """Assigns sequential ordinality values to each of the sorted
@@ -181,10 +171,7 @@ class StructuredTextList(stix.TypedCollection, Sequence):
         """
         ords = self.ordinalities
 
-        if not ords:
-            return 1
-
-        return ords[-1] + 1
+        return ords[-1] + 1 if ords else 1
 
     def __iter__(self):
         """Returns an iterator for the collection sorted by ordinality.
@@ -231,8 +218,7 @@ class StructuredTextList(stix.TypedCollection, Sequence):
         of their ordinalities.
 
         """
-        for text in reversed(self.sorted):
-            yield text
+        yield from reversed(self.sorted)
 
     def add(self, value):
         """Adds the :class:`.StructuredText` `value` to the collection.

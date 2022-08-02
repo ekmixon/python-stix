@@ -14,14 +14,11 @@ DATETIME_PRECISION_VALUES = DATE_PRECISION_VALUES + TIME_PRECISION_VALUES
 
 
 def validate_precision(instance, value):
-    if value is None:
+    if value is None or value in DATETIME_PRECISION_VALUES:
         return
-    elif value in DATETIME_PRECISION_VALUES:
-        return
-    else:
-        error = "The precision must be one of {0}. Received '{1}'"
-        error = error.format(DATETIME_PRECISION_VALUES, value)
-        raise ValueError(error)
+    error = "The precision must be one of {0}. Received '{1}'"
+    error = error.format(DATETIME_PRECISION_VALUES, value)
+    raise ValueError(error)
 
 
 class DateTimeWithPrecision(stix.Entity):
